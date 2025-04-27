@@ -13,7 +13,7 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "supers
 # Include router
 app.include_router(auth_router)
 
-# Create tables on startup
+# Create tables on startup file
 @app.on_event("startup")
 async def startup_event():
     async with engine.begin() as conn:
