@@ -1,0 +1,34 @@
+<!-- templates/edit_product.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+</head>
+<body>
+    <h1>Edit Product</h1>
+
+    <form method="post" action="/admin/update-product/{{ product.id }}">
+        <label>Product Name:</label><br>
+        <input type="text" name="name" value="{{ product.name }}" required><br>
+
+        <label>Description:</label><br>
+        <input type="text" name="description" value="{{ product.description }}"><br>
+
+        <label>Price:</label><br>
+        <input type="number" step="0.01" name="price" value="{{ product.price }}" required><br>
+
+        <label>Quantity:</label><br>
+        <input type="number" name="quantity" value="{{ product.quantity }}" required><br>
+
+        <label>Branch:</label><br>
+        <input type="text" name="branch" value="{{ product.branch }}" required><br><br>
+
+        <button type="submit">Update Product</button>
+    </form>
+
+    <br>
+    <a href="/admin/dashboard">Back to Dashboard</a>
+</body>
+</html>
