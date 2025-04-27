@@ -33,20 +33,32 @@ async def login(
     user = result.scalars().first()
 
     if user:
-        # ✅ Save user info into session
-        request.session['user'] = {"username": user.username}
-        return RedirectResponse("/welcome", status_code=302)
-    else:
-        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid credentials"})
+        # ✅ Save session
+        request.session['user'] = {
+            "username": user.username,
+            "role": user.role,
+            "branch": user.branch
+        }
 
-# ✅ GET - Welcome page (After login)
-@router.get("/welcome")
-async def welcome_page(request: Request):
-    user = request.session.get("user")
-    if user:
-        return templates.TemplateResponse("welcome.html", {"request": request, "username": user["username"]})
+        # ✅ Redirect based on role
+        if user.role == "admin":
+            return RedirectResponse("/admin/dashboard", status_code=302)
+        elif user.role == "manager":
+            return RedirectResponse("/manager/dashboard", status_code=302)
+        else:
+            # Future proofing (if other roles added)
+            return templates.TemplateResponse("login.html", {
+                "request": request,
+                "error": "Unknown role"
+            })
+
     else:
-        return RedirectResponse("/login")
+        # Login failed
+        return templates.TemplateResponse("login.html", {
+            "request": request,
+            "error": "Invalid credentials"
+        })
+
 
 # ✅ GET - Logout
 @router.get("/logout")
